@@ -1,0 +1,1 @@
+ALTER TABLE public.lots ALTER COLUMN auction_id DROP NOT NULL;

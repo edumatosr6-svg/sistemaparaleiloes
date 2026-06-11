@@ -1,0 +1,53 @@
+name: Deploy to Hostinger via FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build Hostinger bundle
+        run: bun run build:hostinger
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        # build:hostinger now generates a clean shell index.html, a real
+        # sitemap.xml, and a full .htaccess (SPA fallback + static-asset
+        # exemptions + cache headers + HTTPS). See scripts/generate-static-index.mjs.
+
+      - name: Verify build artifacts
+        run: |
+          ls -la dist/client/
+          test -f dist/client/index.html
+          test -f dist/client/sitemap.xml
+          test -f dist/client/.htaccess
+          test -f dist/client/placeholder.svg
+          echo "All required artifacts present."
+
+      - name: Deploy via FTP to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 212.85.6.36
+          username: u386043061.sistemaparaleiloes.site
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/client/
+          server-dir: ./
+          port: 21
+          dangerous-clean-slate: false

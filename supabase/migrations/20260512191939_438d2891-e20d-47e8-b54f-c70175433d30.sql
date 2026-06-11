@@ -1,0 +1,1 @@
+ALTER TABLE public.auctions ADD COLUMN image_url TEXT;

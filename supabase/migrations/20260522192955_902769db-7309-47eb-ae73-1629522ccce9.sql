@@ -1,0 +1,1 @@
+UPDATE public.system_settings SET value = jsonb_set(value, '{logo_url}', '"https://urnnqxsnyvzbrlkqomrx.supabase.co/storage/v1/object/public/site-assets/mega-leiloes-logo-2026.jpeg"'::jsonb) WHERE key = 'site_config';

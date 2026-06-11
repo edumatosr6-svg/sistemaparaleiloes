@@ -1,0 +1,1 @@
+ALTER TABLE public.lots ADD COLUMN hammer_enabled BOOLEAN DEFAULT false;

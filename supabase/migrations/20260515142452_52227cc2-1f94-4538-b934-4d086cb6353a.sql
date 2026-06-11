@@ -1,0 +1,1 @@
+ALTER TABLE public.chat_messages ALTER COLUMN auction_id DROP NOT NULL;

@@ -1,0 +1,1 @@
+ALTER TABLE public.auction_winners ADD COLUMN IF NOT EXISTS payment_details JSONB;

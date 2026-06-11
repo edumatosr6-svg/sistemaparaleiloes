@@ -1,0 +1,1 @@
+ALTER TABLE public.auction_winners ADD COLUMN manual_bidder_name TEXT;
